@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HealthPredict AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="/">🏥 HealthPredict AI</a>
+
+        <div class="ms-auto">
+            <span class="badge bg-success p-2">● Gemini AI Connected</span>
+        </div>
+    </div>
+</nav>
+
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-card shadow">
+            <h1>AI Health Prediction System</h1>
+            <p>
+                Manage patient blood test records, perform CRUD operations,
+                and generate AI-powered health risk remarks using Gemini API.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="container main-container">
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+            <div class="stat-card shadow-sm">
+                <p>Total Patients</p>
+                <h2>{{ total_patients }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card shadow-sm">
+                <p>AI Predictions</p>
+                <h2>{{ total_patients }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card shadow-sm">
+                <p>Database</p>
+                <h2>SQLite</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card shadow-sm">
+                <p>System Status</p>
+                <h2>Live</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card app-card shadow-sm mb-4">
+        <div class="card-header">
+            👤 Register Patient
+        </div>
+
+        <div class="card-body">
+            <form method="POST" action="/add">
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                        <label>Full Name</label>
+                        <input type="text" name="fullname" class="form-control" required minlength="3">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Date of Birth</label>
+                        <input type="date" name="dob" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Glucose</label>
+                        <input type="number" name="glucose" class="form-control" min="50" max="500" required>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Haemoglobin</label>
+                        <input type="number" name="haemoglobin" class="form-control" min="5" max="25" step="0.1" required>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Cholesterol</label>
+                        <input type="number" name="cholesterol" class="form-control" min="50" max="500" required>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary px-4">
+                    💾 Save Patient
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="card app-card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>📋 Patient Database</span>
+            <span class="small text-muted">CRUD enabled</span>
+        </div>
+
+        <div class="card-body">
+
+            <input type="text" id="searchInput" class="form-control mb-3" placeholder="🔍 Search patient by name or email...">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle" id="patientTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>DOB</th>
+                            <th>Email</th>
+                            <th>Glucose</th>
+                            <th>Haemoglobin</th>
+                            <th>Cholesterol</th>
+                            <th>AI Remarks</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for patient in patients %}
+                        <tr>
+                            <td>{{ patient[0] }}</td>
+                            <td class="fw-semibold">{{ patient[1] }}</td>
+                            <td>{{ patient[2] }}</td>
+                            <td>{{ patient[3] }}</td>
+                            <td>{{ patient[4] }}</td>
+                            <td>{{ patient[5] }}</td>
+                            <td>{{ patient[6] }}</td>
+                            <td class="ai-remarks">{{ patient[7] }}</td>
+                            <td>
+                                <a href="/edit/{{ patient[0] }}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="/delete/{{ patient[0] }}" class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Delete this patient record?')">
+                                   Delete
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <p class="footer-text">
+        Built with Flask, SQLite, Bootstrap and Gemini AI API
+    </p>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
